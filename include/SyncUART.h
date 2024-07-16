@@ -46,14 +46,14 @@ typedef struct {
 
 class SyncUART{
     public:
-        // handler.cpp
         /**
          * @brief Initialize the buffer for sensor data.
          *
-         * The init_buff_data_sens function initializes the buffer used for storing sensor data.
+         * The contructor initializes the buffer used for storing sensor data.
          */
-        void init_buff_data_sens();
+        SyncUART();
 
+        // handler.cpp
         /**
          * @brief Ping the master device and perform appropriate actions based on received commands.
          *
@@ -133,6 +133,8 @@ class SyncUART{
         // end checker.cpp
 
     private:
+        buff_param _b_param;
+
         // handler.cpp
         /**
          * @brief Reset the buffer for sensor data.

@@ -1,22 +1,18 @@
 #include "SyncUART.h"
 
-buff_param p;
+SyncUART::SyncUART(){
+    strlcpy(_b_param.buffer, CODES_SUCCESS::TRANSF_BUFF_DATA_SENS, sizeof(CODES_SUCCESS::TRANSF_BUFF_DATA_SENS));
 
-uint8_t fail_count = 0;
-
-void SyncUART::init_buff_data_sens(){
-    strlcpy(p.buffer, CODES_SUCCESS::TRANSF_BUFF_DATA_SENS, sizeof(CODES_SUCCESS::TRANSF_BUFF_DATA_SENS));
-
-    strlcpy(&p.buffer[strlen(CODES_SUCCESS::TRANSF_BUFF_DATA_SENS)], DELIMITERS::MARK_START_BUFF_DATA_POLL_SENS,
+    strlcpy(&_b_param.buffer[strlen(CODES_SUCCESS::TRANSF_BUFF_DATA_SENS)], DELIMITERS::MARK_START_BUFF_DATA_POLL_SENS,
                         sizeof(DELIMITERS::MARK_START_BUFF_DATA_POLL_SENS));
 
-    p.offset = strlen(p.buffer);
+    _b_param.offset = strlen(_b_param.buffer);
 }
 
 void SyncUART::reset_buff_data_sens(){
-    p.offset = strlen(CODES_SUCCESS::TRANSF_BUFF_DATA_SENS) + strlen(DELIMITERS::MARK_START_BUFF_DATA_POLL_SENS);                                              
-    p.buffer[p.offset] = '\0';
-    p.str_val_sen[0] = '\0';
+    _b_param.offset = strlen(CODES_SUCCESS::TRANSF_BUFF_DATA_SENS) + strlen(DELIMITERS::MARK_START_BUFF_DATA_POLL_SENS);                                              
+    _b_param.buffer[_b_param.offset] = '\0';
+    _b_param.str_val_sen[0] = '\0';
 }
 
 void SyncUART::init_buff_unk_addr_sens(char* buff_err_msg){
@@ -98,8 +94,8 @@ void SyncUART::parse_UART(void (*fun_poll_sens)(), void (*get_data_sens)(buff_pa
 
     } else if(strcmp(code_recv_cmd, CODES_MANAGE::GET_BUFF_DATA_SENS) == 0){
         print(buf_inc_data, true);
-        get_data_sens(&p);
-        send_command(p.buffer);
+        get_data_sens(&_b_param);
+        send_command(_b_param.buffer);
         s_last_code_cmd = (char*) CODES_SUCCESS::CONFM_INIT_PERH;
         reset_buff_data_sens();
 
